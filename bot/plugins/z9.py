@@ -10,7 +10,7 @@ english_words = set(nltk.corpus.words.words())
 ONE9 = False
 used_words = set()  # Store used words here
 trigger_pattern = re.compile(f"Turn: {TG_NAME}")
-starting_letter_pattern = re.compile(r"start with ([A-Z])")
+required_letter_pattern = re.compile(r"start with ([A-Z]), include ([A-Z])")
 min_length_pattern = re.compile(r"include at least (\d+) letters")
 
 @Client.on_message(filters.command("on9", PREFIX) & filters.me)
@@ -33,14 +33,15 @@ async def handle_incoming_message(client, message):
     if ONE9:
         puzzle_text = message.text
 
-        starting_letter_match = re.search(starting_letter_pattern, puzzle_text)
+        required_letter_match = re.search(required_letter_pattern, puzzle_text)
         min_length_match = re.search(min_length_pattern, puzzle_text)
 
-        if starting_letter_match and min_length_match:
-            starting_letter = starting_letter_match.group(1)
+        if required_letter_match and min_length_match:
+            starting_letter = required_letter_match.group(1)
+            required_letter = required_letter_match.group(2)
             min_length = int(min_length_match.group(1))
 
-            valid_words = [word for word in english_words if word.startswith(starting_letter) and len(word) >= min_length and word not in used_words]
+            valid_words = [word for word in english_words if word.startswith(starting_letter) and required_letter in word and len(word) >= min_length and word not in used_words]
 
             if valid_words:
                 random_word = random.choice(valid_words)

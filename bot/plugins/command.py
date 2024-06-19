@@ -26,7 +26,7 @@ async def help_cmd(client, message):
         f"`{PREFIX}update` - Deploy the latest changes\n"
         f"`{PREFIX}dl` - download from http url\n"
         f"`{PREFIX}hack` - Hack animation\n"
-        f"`{PREFIX}action <t | p | s | cs | ea | up>` - Start action\n",
+        f"`{PREFIX}action <t | p | c` - Start action\n",
         parse_mode=enums.ParseMode.MARKDOWN
     )
 
